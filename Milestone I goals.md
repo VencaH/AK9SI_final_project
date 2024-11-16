@@ -126,10 +126,62 @@ doi = {10.1109/CompAuto55930.2022.00029}
 ```
 8. d
 ```bibtex
-
+@INPROCEEDINGS{9751277,
+  author={Đorđević, Borislav and Timčenko, Valentina and Lazić, Milovan and Davidović, Nikola},
+  booktitle={2022 21st International Symposium INFOTEH-JAHORINA (INFOTEH)}, 
+  title={Performance comparison of Docker and Podman container-based virtualization}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Containers;Benchmark testing;Time measurement;Virtual machining;Hardware;Software;Servers;Virtualization;Docker;Podman;Virtual Machine;Containers;Filebench},
+  doi={10.1109/INFOTEH53737.2022.9751277}
+}
 ```
-
-10. wq
+9. d
+```bibtex
+@Article{computers13040094,
+AUTHOR = {Silva, Daniel and Rafael, João and Fonte, Alexandre},
+TITLE = {Toward Optimal Virtualization: An Updated Comparative Analysis of Docker and LXD Container Technologies},
+JOURNAL = {Computers},
+VOLUME = {13},
+YEAR = {2024},
+NUMBER = {4},
+ARTICLE-NUMBER = {94},
+URL = {https://www.mdpi.com/2073-431X/13/4/94},
+ISSN = {2073-431X},
+ABSTRACT = {Traditional hypervisor-assisted virtualization is a leading virtualization technology in data centers, providing cost savings (CapEx and OpEx), high availability, and disaster recovery. However, its inherent overhead may hinder performance and seems not scale or be flexible enough for certain applications, such as microservices, where deploying an application using a virtual machine is a longer and resource-intensive process. Container-based virtualization has received attention, especially with Docker, as an alternative, which also facilitates continuous integration/continuous deployment (CI/CD). Meanwhile, LXD has reactivated the interest in Linux LXC containers, which provides unique operations, including live migration and full OS emulation. A careful analysis of both options is crucial for organizations to decide which best suits their needs. This study revisits key concepts about containers, exposes the advantages and limitations of each container technology, and provides an up-to-date performance comparison between both types of containers (applicational vs. system). Using extensive benchmarks and well-known workload metrics such as CPU scores, disk speed, and network throughput, we assess their performance and quantify their virtualization overhead. Our results show a clear overall trend toward meritorious performance and the maturity of both technologies (Docker and LXD), with low overhead and scalable performance. Notably, LXD shows greater stability with consistent performance variability.},
+DOI = {10.3390/computers13040094}
+}
+```
+10. d
+```bibtex
+@misc{Kjellstedt1475598,
+   author = {Kjellstedt, Mattias},
+   institution = {Umeå University, Department of Computing Science},
+   pages = {24},
+   school = {Umeå University, Department of Computing Science},
+   title = {PERFORMANCE EVALUATION OF DEPLOYING MICROSERVICE SUSING DOCKER AND PODMAN},
+   series = {UMNAD},
+   number = {1241},
+   abstract = {Containers are the latest generation of virtualization solutions. The most popular container solution has been Docker, but it struggles with security issues. A newer alternative is Podman, which solves the security issues while offering similar functionality. In this study I answer the question ”how does the overhead of Docker and Podman impact performance compared to native performance?”. The amount of overhead these two containers introduces are compared, along with native system performance by benchmarking CPU- memory- and disk performances.These benchmarks implies that the two containers have very similar and near-native performance and the choice of container solution is not a question of performance, but rather of user preferences: Do you want the added security? Podman. Do you already have your whole environment build around Docker and the security is not a problem? Stick with Docker. },
+   year = {2020}
+}
+```
+11. d
+```bibtex
+@article{article,
+author = {H. Husain, K. Marzuki, C. M. Lauw, and L. Z. A. Mardedi},
+year = {2023},
+month = {},
+pages = {57-67},
+title = {Analysis and Implementation of Comparison Between Podman and Docker in Container Management},
+volume = {3},
+journal = {Int. J. Electron. Commun. Syst.},
+doi = {10.24042/ijecs.v3i2.19860}
+}
+```
+12. wq
 
 
 # Introduction
