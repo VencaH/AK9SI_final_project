@@ -25,6 +25,7 @@
             python-pkgs.pip
             python-pkgs.python-lsp-server
             python-pkgs.pytest
+            python-pkgs.fastapi
           ]))
         ];
       };

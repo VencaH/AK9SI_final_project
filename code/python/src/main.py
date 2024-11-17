@@ -1,7 +1,9 @@
+from fastapi import FastAPI
 
+app = FastAPI()
 
-def main():
-    print("Hello, worlds!")
+@app.get("/")
+def get_response():
+    return {"Greeting": "Hello, World"}
+    
 
-if __name__ == "__main__":
-    main()
