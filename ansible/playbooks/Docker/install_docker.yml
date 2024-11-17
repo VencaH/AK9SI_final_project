@@ -1,0 +1,65 @@
+---
+- name: Prepare system for Docker instalation
+  hosts: all
+  become: true
+  become_user: root
+  
+  tasks:
+    - name: Install aptitude
+      apt:
+        update_cache: true
+        name: aptitude
+        state: latest
+        
+    - name: Install packages needed for Docker  
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        update_cache: true
+
+    - name: Check if reboot is needed
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required
+
+    - name: Reboot if needed
+      ansible.builtin.reboot:
+      when: reboot_required == true  
+    
+
+
+- name: Install Docker
+  hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+        
+    - name: Check if reboot is needed
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: no
+      register: reboot_required
+
+    - name: Reboot if needed
+      ansible.builtin.reboot:
+      when: reboot_required == true  

@@ -1,0 +1,16 @@
+---
+- name: Update applications on the server
+  hosts: all
+
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      become_user: root
+      apt:
+        update_cache: yes
+        upgrade: yes
+        
+    - name: Reboot machines
+      become: true
+      become_user: root
+      ansible.builtin.reboot: 
