@@ -18,12 +18,6 @@ jobs:
       id-token: write
       
     steps:
-      # from https://stackoverflow.com/questions/58033366/how-to-get-the-current-branch-within-github-actions 
-      # - name: Extract branch name
-      #   shell: bash
-      #   run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-      #   id: extract_branch
-
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.7.0
         with:
@@ -64,6 +58,9 @@ jobs:
         with:
           context: ./common/python-mock/code/python/
           push: true
+          platforms:
+            - linux/amd64
+            - linux/arm64
           tags: ${{ steps.meta_app.outputs.tags }}
           labels: ${{ steps.meta_app.outputs.labels }}
           cache-from: type=gha
