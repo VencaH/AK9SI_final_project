@@ -48,6 +48,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # build simple_app
       - name: Extract Docker metadata
         id: meta_app_simple
         uses: docker/metadata-action@v5
@@ -59,7 +60,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push-app
+        id: build-and-push-simple
         uses: docker/build-push-action@v6
         with:
           context: ./common/python-mock/code/python/simple_app
@@ -81,4 +82,39 @@ jobs:
           COSIGN_EXPERIMENTAL: "true"
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+        run: echo "${{ steps.meta_app_simple.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-simple.outputs.digest }}
+
+      # build complex_app
+      - name: Extract Docker metadata
+        id: meta_app_complex
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app
+          tags: |
+            type=raw,value=python_complex
+ 
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push-complex
+        uses: docker/build-push-action@v6
+        with:
+          context: ./common/python-mock/code/python/complex_app
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta_app_simple.outputs.tags }}
+          labels: ${{ steps.meta_app_simple.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta_app_simple.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-complex.outputs.digest }}
