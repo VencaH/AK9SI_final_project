@@ -53,9 +53,9 @@ jobs:
         id: meta_app_simple
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/simple_app
           tags: |
-            type=raw,value=python_simple
+            type=raw,value=python
  
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -89,9 +89,9 @@ jobs:
         id: meta_app_complex
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
           tags: |
-            type=raw,value=python_complex
+            type=raw,value=python
  
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
