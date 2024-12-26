@@ -102,8 +102,8 @@ jobs:
           context: ./common/python-mock/code/python/complex_app
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta_app_simple.outputs.tags }}
-          labels: ${{ steps.meta_app_simple.outputs.labels }}
+          tags: ${{ steps.meta_app_complex.outputs.tags }}
+          labels: ${{ steps.meta_app_complex.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
