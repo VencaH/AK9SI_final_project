@@ -1,0 +1,1 @@
+Výpočet pro alespoň pro 2 000 000 hodnot
