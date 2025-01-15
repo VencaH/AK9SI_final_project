@@ -1,0 +1,18 @@
+spin_manifest_version = 2
+
+[application]
+authors = ["gabaj"]
+description = "Hello world app"
+name = "my-hello-world"
+version = "0.1.0"
+
+[[trigger.http]]
+route = "/helloworld"
+component = "my-hello-world"
+
+[component.my-hello-world]
+source = "target/my-hello-world.wasm"
+exclude_files = ["**/node_modules"]
+[component.my-hello-world.build]
+command = "npm run build"
+watch = ["src/**/*.ts", "package.json"]
