@@ -101,7 +101,7 @@ jobs:
         id: build-and-push-fib
         uses: docker/build-push-action@v6
         with:
-          context: ./common/typescript-mock/code/Typescript/typescript-docker-fibonacci
+          context: ./common/typescript-mock/code/TypeScript/typescript-docker-fibonacci
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta_app_fib.outputs.tags }}
