@@ -1,0 +1,159 @@
+name: Docker-python-build
+
+on:
+  push:
+    tags: ['rust']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-python
+
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      
+    steps:
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.7.0
+        with:
+          cosign-release: 'v2.4.1'
+
+      - name: Checkout the code repo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            code/rust
+          path: ./common/rust-mock
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # Set up builx and QEMU to use multiplatform build
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # build hello-world app 
+      - name: Extract Docker metadata for Hello World app
+        id: meta_hello_world
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/rust-hello-world
+          tags: |
+            type=raw,value=rust
+            type=raw,value=hello-world
+ 
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image of Hello World app
+        id: build-and-push-hello-world
+        uses: docker/build-push-action@v6
+        with:
+          context: ./common/rust-mock/code/rust/rust-docker-hello-world
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta_hello_world.outputs.tags }}
+          labels: ${{ steps.meta_hello_world.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image of Hello World app
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta_hello_world.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-hello-world.outputs.digest }}
+
+      # build fibonacci
+      - name: Extract Docker metadata for Fibonacci app
+        id: meta_app_fib
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
+          tags: |
+            type=raw,value=rust
+            type=raw,value=fibonacci
+ 
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image of Fibonacci app
+        id: build-and-push-fib
+        uses: docker/build-push-action@v6
+        with:
+          context: ./common/rust-mock/code/rust/docker-rust-fibonacci
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta_app_fib.outputs.tags }}
+          labels: ${{ steps.meta_app_fib.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image of Fibonacci app
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta_app_fib.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-fib.outputs.digest }}
+        
+      # build primes
+      - name: Extract Docker metadata for Primes app
+        id: meta_app_primes
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
+          tags: |
+            type=raw,value=rust
+            type=raw,value=primes
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image of Primes app
+        id: build-and-push-primes
+        uses: docker/build-push-action@v6
+        with:
+          context: ./common/rust-mock/code/rust/docker-rust-primes
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta_app_primes.outputs.tags }}
+          labels: ${{ steps.meta_app_primes.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image of Primes app
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance
+        run: echo "${{ steps.meta_app_primes.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-primes.outputs.digest }}
+
