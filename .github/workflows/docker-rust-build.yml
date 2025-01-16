@@ -1,4 +1,4 @@
-name: Docker-python-build
+name: Docker-rust-build
 
 on:
   push:
@@ -90,7 +90,7 @@ jobs:
         id: meta_app_fib
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/rust-fibonacci
           tags: |
             type=raw,value=rust
             type=raw,value=fibonacci
@@ -101,7 +101,7 @@ jobs:
         id: build-and-push-fib
         uses: docker/build-push-action@v6
         with:
-          context: ./common/rust-mock/code/rust/docker-rust-fibonacci
+          context: ./common/rust-mock/code/rust/rust-docker-fibonacci
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta_app_fib.outputs.tags }}
@@ -137,7 +137,7 @@ jobs:
         id: build-and-push-primes
         uses: docker/build-push-action@v6
         with:
-          context: ./common/rust-mock/code/rust/docker-rust-primes
+          context: ./common/rust-mock/code/rust/rust-docker-primes
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta_app_primes.outputs.tags }}
