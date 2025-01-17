@@ -6,7 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}-spin-rust
+  IMAGE_NAME: ak9si_final_project-spin-rust
+  USER_NAME: vencah
 
 jobs:
   
@@ -44,11 +45,31 @@ jobs:
           plugins: 
 
       - name: build and push hello-world
-        id: push
+        id: push_hello-world
         uses: fermyon/actions/spin/push@v1
         with:
           registry: ghcr.io
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GHCR_TOKEN }}
-          registry_reference: "ghcr.io/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
           manifest_file: ./common/spin-rust-mock/code/SPIN/rust/hello-world/spin.toml
+          
+      - name: build and push fibonacci app
+        id: push_fibonacci
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          manifest_file: ./common/spin-rust-mock/code/SPIN/rust/fibonacci/spin.toml
+
+      - name: build and push primes
+        id: push_primes
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          manifest_file: ./common/spin-rust-mock/code/SPIN/rust/primes/spin.toml
