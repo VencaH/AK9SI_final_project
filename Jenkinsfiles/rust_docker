@@ -30,11 +30,11 @@ pipeline{
                     
                         def container_name = get_container_name(image_name)
                     
-                        stage('Pull newest image for ${image_name}'){
+                        stage("Pull newest image for ${image_name}"){
                             sshCommand remote: remote, command: "docker pull ${image_name}"
                         }
                         
-                        stage('Run Docker container ${container_name}'){
+                        stage("Run Docker container ${container_name}"){
                             sshCommand remote: remote, command: "docker run --name ${container_name} -d -p 80:8080 ${image_name}"
                         }
                         
@@ -43,7 +43,7 @@ pipeline{
                         }
                         
                         
-                        stage('Run oha tests for ${image_name}'){
+                        stage("Run oha tests for ${image_name}"){
                             if ( image_name == 'ghcr.io/vencah/ak9si_final_project-rust/rust-hello-world:rust') {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
                             } else {
@@ -51,11 +51,11 @@ pipeline{
                             }
                         }
                         
-                        stage('Stop Docker container ${container_name}'){
+                        stage("Stop Docker container ${container_name}"){
                             sshCommand remote: remote, command: "docker stop ${container_name}"
                         }
                         
-                        stage('Delete Docker container ${container_name}'){
+                        stage("Delete Docker container ${container_name}"){
                             sshCommand remote: remote, command: "docker rm ${container_name}"
                         }
                     }

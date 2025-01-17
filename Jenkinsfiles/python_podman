@@ -30,11 +30,11 @@ pipeline{
                     
                         def container_name = get_container_name(image_name)
                     
-                        stage('Pull newest image for ${image_name}'){
+                        stage("Pull newest image for ${image_name}"){
                             sshCommand remote: remote, command: "podman pull ${image_name}"
                         }
                         
-                        stage('Run Docker container ${container_name}'){
+                        stage("Run Docker container ${container_name}"){
                             sshCommand remote: remote, command: "podman run --name ${container_name} -d -p 8000:8000 ${image_name}"
                         }
                         
@@ -43,15 +43,15 @@ pipeline{
                         }
                         
                         
-                        stage('Run oha tests for ${image_name}'){
+                        stage("Run oha tests for ${image_name}"){
                             sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000"
                         }
                         
-                        stage('Stop Podman container ${container_name}'){
+                        stage("Stop Podman container ${container_name}"){
                             sshCommand remote: remote, command: "podman stop ${container_name}"
                         }
                         
-                        stage('Delete Podman container ${container_name}'){
+                        stage("Delete Podman container ${container_name}"){
                             sshCommand remote: remote, command: "podman rm ${container_name}"
                         }
                     }
