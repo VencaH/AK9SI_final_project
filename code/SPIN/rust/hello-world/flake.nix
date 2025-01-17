@@ -45,7 +45,7 @@
               extensions= [ "rust-src" "rust-analyzer" ];
               targets = [ 
                 "wasm32-unknown-unknown" 
-                "wasm32-wasi"
+                "wasm32-wasip1"
                 ];
             }))
           ] ++ pkgs.lib.optionals pkg.stdenv.isDarwin [

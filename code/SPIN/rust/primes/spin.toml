@@ -11,8 +11,8 @@ route = "/..."
 component = "primes"
 
 [component.primes]
-source = "target/wasm32-wasi/release/primes.wasm"
+source = "target/wasm32-wasip1/release/primes.wasm"
 allowed_outbound_hosts = []
 [component.primes.build]
-command = "cargo build --target wasm32-wasi --release"
+command = "cargo build --target wasm32-wasip1 --release"
 watch = ["src/**/*.rs", "Cargo.toml"]

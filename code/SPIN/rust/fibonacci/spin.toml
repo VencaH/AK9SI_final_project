@@ -11,8 +11,8 @@ route = "/..."
 component = "fibonacci"
 
 [component.fibonacci]
-source = "target/wasm32-wasi/release/fibonacci.wasm"
+source = "target/wasm32-wasip1/release/fibonacci.wasm"
 allowed_outbound_hosts = []
 [component.fibonacci.build]
-command = "cargo build --target wasm32-wasi --release"
+command = "cargo build --target wasm32-wasip1 --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
