@@ -1,0 +1,63 @@
+def remote = [:]
+def image_names = ['ghcr.io/vencah/ak9si_final_project-rust/hello_world:rust', 'ghcr.io/vencah/ak9si_final_project-rust/fibonacci:rust', 'ghcr.io/vencah/ak9si_final_project-rust/primes:rust']
+
+
+def get_container_name(image_name) {
+    image_name.tokenize(":")[1] + "_cont"
+}
+
+pipeline{
+    agent any
+    
+    stages{
+        
+        stage('Define remote parameters') {
+            steps{
+                script{
+                    remote.name = 'Docker'
+                    remote.host = '138.2.166.44'
+                    remote.user = 'ubuntu'
+                    remote.knownHosts = '/home/agent_001/.ssh/known_hosts'
+                    remote.identityFile = '/home/agent_001/.ssh/ssh-key-arm.key'
+                }
+            }
+        }
+        
+        stage('run and test containers') {
+            steps {
+                script {
+                    image_names.each { image_name ->
+                    
+                        def container_name = get_container_name(image_name)
+                    
+                        stage('Pull newest image for ${image_name}'){
+                            sshCommand remote: remote, command: "docker pull ${image_name}"
+                        }
+                        
+                        stage('Run Docker container ${container_name}'){
+                            sshCommand remote: remote, command: "docker run --name ${container_name} -d -p 80:8000 ${image_name}"
+                        }
+                        
+                        stage("Wait 30s for server to start"){
+                            sleep 30
+                        }
+                        
+                        
+                        stage('Run oha tests for ${image_name}'){
+                            sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
+                        }
+                        
+                        stage('Stop Docker container ${container_name}'){
+                            sshCommand remote: remote, command: "docker stop ${container_name}"
+                        }
+                        
+                        stage('Delete Docker container ${container_name}'){
+                            sshCommand remote: remote, command: "docker rm ${container_name}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
