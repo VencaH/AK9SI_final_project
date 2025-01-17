@@ -126,7 +126,7 @@ jobs:
         id: meta_app_primes
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/rust-docker-primes
           tags: |
             type=raw,value=rust
             type=raw,value=primes
