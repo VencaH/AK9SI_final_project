@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/hello_world:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/fibonacci:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/primes:typescript']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/typescript-hello-world:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-fibonacci:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-primes:typescript']
 
 
 def get_container_name(image_name) {
@@ -35,7 +35,7 @@ pipeline{
                         }
                         
                         stage('Run Docker container ${container_name}'){
-                            sshCommand remote: remote, command: "podman run --name ${container_name} -d -p 8000:8000 ${image_name}"
+                            sshCommand remote: remote, command: "podman run --name ${container_name} -d -p 8000:3000 ${image_name}"
                         }
                         
                         stage("Wait 30s for server to start"){
@@ -44,7 +44,11 @@ pipeline{
                         
                         
                         stage('Run oha tests for ${image_name}'){
-                            sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000"
+                            if (${image_name} == 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-hello-world:typescript') {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000"
+                            } else {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000/20"
+                            }
                         }
                         
                         stage('Stop Podman container ${container_name}'){

@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-rust/hello_world:rust', 'ghcr.io/vencah/ak9si_final_project-rust/fibonacci:rust', 'ghcr.io/vencah/ak9si_final_project-rust/primes:rust']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-rust/rust-hello-world:rust', 'ghcr.io/vencah/ak9si_final_project-rust/rust-fibonacci:rust', 'ghcr.io/vencah/ak9si_final_project-rust/rust-primes:rust']
 
 
 def get_container_name(image_name) {
@@ -35,7 +35,7 @@ pipeline{
                         }
                         
                         stage('Run Docker container ${container_name}'){
-                            sshCommand remote: remote, command: "docker run --name ${container_name} -d -p 80:8000 ${image_name}"
+                            sshCommand remote: remote, command: "docker run --name ${container_name} -d -p 80:8080 ${image_name}"
                         }
                         
                         stage("Wait 30s for server to start"){
@@ -44,7 +44,11 @@ pipeline{
                         
                         
                         stage('Run oha tests for ${image_name}'){
-                            sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
+                            if ( ${image_name} == 'ghcr.io/vencah/ak9si_final_project-rust/rust-hello-world:rust') {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
+                            } else {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost/20"
+                            }
                         }
                         
                         stage('Stop Docker container ${container_name}'){
