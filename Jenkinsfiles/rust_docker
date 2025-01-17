@@ -44,7 +44,7 @@ pipeline{
                         
                         
                         stage('Run oha tests for ${image_name}'){
-                            if ( ${image_name} == 'ghcr.io/vencah/ak9si_final_project-rust/rust-hello-world:rust') {
+                            if ( image_name == 'ghcr.io/vencah/ak9si_final_project-rust/rust-hello-world:rust') {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
                             } else {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost/20"
