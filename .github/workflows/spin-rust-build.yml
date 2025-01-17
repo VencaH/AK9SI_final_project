@@ -1,0 +1,54 @@
+name: Spin-rust-build
+
+on:
+  push:
+    tags: ['spin-rust']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-spin-rust
+
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout the code repo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            code/SPIN/rust
+          path: ./common/spin-rust-mock
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+
+      - name: switch rust to nightly
+        run: |
+          rustup install nightly
+          rustup default nightly
+
+      - name: add wasi target
+        run: rustup target add wasm32-wasip1
+
+      - name: Install Spin
+        uses: fermyon/actions/spin/setup@v1
+        with:
+          plugins: 
+
+      - name: build and push hello-world
+        id: push
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          manifest_file: ./common/spin-rust-mock/code/SPIN/rust/hello-world/spin.toml
