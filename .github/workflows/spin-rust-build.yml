@@ -61,7 +61,7 @@ jobs:
           registry: ghcr.io
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GHCR_TOKEN }}
-          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-fibonacci"
           manifest_file: ./common/spin-rust-mock/code/SPIN/rust/fibonacci/spin.toml
 
       - name: build and push primes
@@ -71,5 +71,5 @@ jobs:
           registry: ghcr.io
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GHCR_TOKEN }}
-          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-hello-world"
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-rust-primes"
           manifest_file: ./common/spin-rust-mock/code/SPIN/rust/primes/spin.toml
