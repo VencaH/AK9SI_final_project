@@ -48,26 +48,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # build simple_app
+      # build hello world app
       - name: Extract Docker metadata
-        id: meta_app_simple
+        id: meta_app_hello_world
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/simple_app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/python-hello-world
           tags: |
             type=raw,value=python
+            type=raw,value=hello-world
  
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push-simple
+        id: build-and-push-hello-world
         uses: docker/build-push-action@v6
         with:
-          context: ./common/python-mock/code/python/simple_app
+          context: ./common/python-mock/code/python/python-docker-hello-world
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta_app_simple.outputs.tags }}
-          labels: ${{ steps.meta_app_simple.outputs.labels }}
+          tags: ${{ steps.meta_app_hello_world.outputs.tags }}
+          labels: ${{ steps.meta_app_hello_world.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -82,28 +83,29 @@ jobs:
           COSIGN_EXPERIMENTAL: "true"
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-        run: echo "${{ steps.meta_app_simple.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-simple.outputs.digest }}
+        run: echo "${{ steps.meta_app_hello_world.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-hello-world.outputs.digest }}
 
-      # build complex_app
+      # build fibonacci app
       - name: Extract Docker metadata
-        id: meta_app_complex
+        id: meta_app_fibonacci
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/complex_app
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/python-fibonacci
           tags: |
             type=raw,value=python
+            type=raw,value=fibonacci
  
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push-complex
+        id: build-and-push-fibonacci
         uses: docker/build-push-action@v6
         with:
-          context: ./common/python-mock/code/python/complex_app
+          context: ./common/python-mock/code/python/python-docker-fibonacci
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta_app_complex.outputs.tags }}
-          labels: ${{ steps.meta_app_complex.outputs.labels }}
+          tags: ${{ steps.meta_app_fibonacci.outputs.tags }}
+          labels: ${{ steps.meta_app_fibonacci.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -117,4 +119,40 @@ jobs:
           COSIGN_EXPERIMENTAL: "true"
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-        run: echo "${{ steps.meta_app_simple.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-complex.outputs.digest }}
+        run: echo "${{ steps.meta_app_fibonacci.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-fibonacci.outputs.digest }}
+
+      # build primes app
+      - name: Extract Docker metadata
+        id: meta_app_primes
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/python-primes
+          tags: |
+            type=raw,value=python
+            type=raw,value=primes
+ 
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push-primes
+        uses: docker/build-push-action@v6
+        with:
+          context: ./common/python-mock/code/python/python-docker-primes
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta_app_primes.outputs.tags }}
+          labels: ${{ steps.meta_app_primes.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta_app_primes.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push-primes.outputs.digest }}
