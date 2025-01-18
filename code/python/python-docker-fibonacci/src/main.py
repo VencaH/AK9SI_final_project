@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-def fibbonachi(n:int) -> int:
+def fibbonachi(n: int) -> int:
     match n:
         case 0:
             return 1
@@ -11,9 +11,9 @@ def fibbonachi(n:int) -> int:
         case _:
             return fibbonachi(n-1) + fibbonachi(n-2)
 
-@app.get("/")
-def get_response():
-    return {"40th number of fibbonachi": fibbonachi(40)}
+@app.get("/{number}")
+def get_response(number: int):
+    return {f"Fibonacci on position {number}": fibbonachi(number)}
 
     
 
