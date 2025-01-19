@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/typescript-hello-world:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-fibonacci:typescript', 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-primes:typescript']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-hello-world', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-fibonacci', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-primes']
 
 
 def get_container_name(image_name) {

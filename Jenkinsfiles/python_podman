@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-python/simple_app:python', 'ghcr.io/vencah/ak9si_final_project-python/complex_app:python']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-python/podman-hello-world:latest', 'ghcr.io/vencah/ak9si_final_project-python/podman-fibonacci:latest', 'ghcr.io/vencah/ak9si_final_project-python/podman-primes:latest']
 
 
 def get_container_name(image_name) {
