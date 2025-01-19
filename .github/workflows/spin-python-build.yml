@@ -1,0 +1,95 @@
+name: Spin-python-build
+
+on:
+  push:
+    tags: ['spin-python']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ak9si_final_project-spin-python
+  USER_NAME: vencah
+
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout the code repo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            code/SPIN/python
+          path: ./common/spin-python-mock
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Install Spin
+        uses: fermyon/actions/spin/setup@v1
+        with:
+          plugins: py2wasm
+
+      # build hello-world
+      - name: Executing Setup Commands for hello-world
+        run: python3 -m venv venv && source venv/bin/activate
+        working-directory: ./common/spin-python-mock/code/SPIN/python/hello-world
+
+      - name: Component Dependency Installation
+        run: pip install -r requirements.txt
+        working-directory: ./common/spin-python-mock/code/SPIN/python/hello-world
+
+      - name: build and push hello-world
+        id: push_hello-world
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-python-hello-world"
+          manifest_file: ./common/spin-python-mock/code/SPIN/python/hello-world/spin.toml
+          
+      # build fibonacci
+      - name: Executing Setup Commands for fibonacci
+        run: python3 -m venv venv && source venv/bin/activate
+        working-directory: ./common/spin-python-mock/code/SPIN/python/fibonacci
+
+      - name: Component Dependency Installation fibonacci
+        run: pip install -r requirements.txt
+        working-directory: ./common/spin-python-mock/code/SPIN/python/fibonacci
+
+      - name: build and push fibonacci app
+        id: push_fibonacci
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-python-fibonacci"
+          manifest_file: ./common/spin-python-mock/code/SPIN/python/fibonacci/spin.toml
+
+      # build primes
+      - name: Executing Setup Commands for primes
+        run: python3 -m venv venv && source venv/bin/activate
+        working-directory: ./common/spin-python-mock/code/SPIN/python/primes
+
+      - name: Component Dependency Installation primes
+        run: pip install -r requirements.txt
+        working-directory: ./common/spin-python-mock/code/SPIN/python/primes
+
+      - name: build and push primes
+        id: push_primes
+        uses: fermyon/actions/spin/push@v1
+        with:
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GHCR_TOKEN }}
+          registry_reference: "ghcr.io${{ env.REPOSITORY }}/${{ env.USER_NAME }}/${{ env.IMAGE_NAME }}/spin-python-primes"
+          manifest_file: ./common/spin-python-mock/code/SPIN/python/primes/spin.toml
