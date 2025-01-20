@@ -44,7 +44,11 @@ pipeline{
                         
                         
                         stage("Run oha tests for ${image_name}"){
-                            sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000"
+                            if ( image_name == 'ghcr.io/vencah/ak9si_final_project-python/podman-hello-world:latest') {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost"
+                            } else {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost/30"
+                            }
                         }
                         
                         stage("Stop Podman container ${container_name}"){
