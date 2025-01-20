@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-primes']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world:latest', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci:latest', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-primes:latest']
 
 
 def get_container_name(image_name) {
@@ -39,14 +39,14 @@ pipeline{
                         }
                         
                         stage("Wait 60s for server to start"){
-                            sleep 60
+                            sleep 30
                         }
                         
                         
                         stage("Run oha tests for ${image_name}"){
-                            if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world:typescript') {
+                            if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world:latest') {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000"
-                            } else if ( image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci:typescript') {
+                            } else if ( image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci:latest') {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000/fibonacci/30"
                             } else {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000/primes/30"
