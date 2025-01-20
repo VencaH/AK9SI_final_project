@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-python/python-hello-world:latest', 'ghcr.io/vencah/ak9si_final_project-python/python-fibonacci:latest', 'ghcr.io/vencah/ak9si_final_project-python/python-primes:latest']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-python/python-hello-world:python', 'ghcr.io/vencah/ak9si_final_project-python/python-fibonacci:python', 'ghcr.io/vencah/ak9si_final_project-python/python-primes:python']
 
 
 def get_container_name(image_name) {
@@ -44,7 +44,7 @@ pipeline{
                         
                         
                         stage("Run oha tests for ${image_name}"){
-                            if ( image_name == 'ghcr.io/vencah/ak9si_final_project-python/python-hello-world:latest') {
+                            if ( image_name == 'ghcr.io/vencah/ak9si_final_project-python/python-hello-world:python') {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost"
                             } else {
                                 sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost/30"
