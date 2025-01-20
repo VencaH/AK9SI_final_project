@@ -1,5 +1,5 @@
 def remote = [:]
-def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-hello-world', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-fibonacci', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-typescript-primes']
+def image_names = ['ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci', 'ghcr.io/vencah/ak9si_final_project-typescript/podman-primes']
 
 
 def get_container_name(image_name) {
@@ -44,12 +44,12 @@ pipeline{
                         
                         
                         stage("Run oha tests for ${image_name}"){
-                            if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-hello-world:typescript') {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000"
-                            } else if ( image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-fibonacci:typescript') {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000/fibonacci/20"
+                            if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-hello-world:typescript') {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000"
+                            } else if ( image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/podman-fibonacci:typescript') {
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000/fibonacci/30"
                             } else {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost:8000/primes/20"
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost:8000/primes/30"
                             }
                         }
                         

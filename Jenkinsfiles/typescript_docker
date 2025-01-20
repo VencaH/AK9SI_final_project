@@ -45,11 +45,11 @@ pipeline{
                         
                         stage("Run oha tests for ${image_name}"){
                             if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-hello-world:typescript') {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost"
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost"
                             } else if (image_name == 'ghcr.io/vencah/ak9si_final_project-typescript/typescript-fibonacci:typescript') {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost/fibonacci/20"
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost/fibonacci/30"
                             } else  {
-                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha http://localhost/primes/20"
+                                sshCommand remote: remote, command: "/home/ubuntu/.cargo/bin/oha -n 1000 http://localhost/primes/30"
                             }
                         }
                         
