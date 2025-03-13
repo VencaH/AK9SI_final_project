@@ -35,18 +35,18 @@ $$
 
 
 # Literature
-1.  
+1.
 ```bibtex
-@INPROCEEDINGS{7092949,
-  author={Morabito, Roberto and Kjällman, Jimmy and Komu, Miika},
-  booktitle={2015 IEEE International Conference on Cloud Engineering}, 
-  title={Hypervisors vs. Lightweight Virtualization: A Performance Comparison}, 
-  year={2015},
-  volume={},
-  number={},
-  pages={386-393},
-  keywords={Containers;Virtual machine monitors;Virtualization;Linux;Benchmark testing;Operating systems;Performance; Benchmarking; Virtualization; Hypervisor; Container},
-  doi={10.1109/IC2E.2015.74}}
+@article{article,
+author = {Eka Pratama, I Putu Agus and Raharja, I Made},
+year = {2023},
+month = {12},
+pages = {2240},
+title = {Node.js Performance Benchmarking and Analysis at Virtualbox, Docker, and Podman Environment Using Node-Bench Method},
+volume = {7},
+journal = {JOIV : International Journal on Informatics Visualization},
+doi = {10.30630/joiv.7.4.01762}
+}
 ```
 2. 
 ```bibtex
@@ -63,16 +63,16 @@ $$
 ```
 3. d
 ```bibtex
-@article{article,
-author = {Eka Pratama, I Putu Agus and Raharja, I Made},
-year = {2023},
-month = {12},
-pages = {2240},
-title = {Node.js Performance Benchmarking and Analysis at Virtualbox, Docker, and Podman Environment Using Node-Bench Method},
-volume = {7},
-journal = {JOIV : International Journal on Informatics Visualization},
-doi = {10.30630/joiv.7.4.01762}
-}
+@INPROCEEDINGS{7092949,
+  author={Morabito, Roberto and Kjällman, Jimmy and Komu, Miika},
+  booktitle={2015 IEEE International Conference on Cloud Engineering}, 
+  title={Hypervisors vs. Lightweight Virtualization: A Performance Comparison}, 
+  year={2015},
+  volume={},
+  number={},
+  pages={386-393},
+  keywords={Containers;Virtual machine monitors;Virtualization;Linux;Benchmark testing;Operating systems;Performance; Benchmarking; Virtualization; Hypervisor; Container},
+  doi={10.1109/IC2E.2015.74}}
 ```
 4. 
 ```bibtex
@@ -126,20 +126,6 @@ doi = {10.1109/CompAuto55930.2022.00029}
 ```
 8. d
 ```bibtex
-@INPROCEEDINGS{9751277,
-  author={Đorđević, Borislav and Timčenko, Valentina and Lazić, Milovan and Davidović, Nikola},
-  booktitle={2022 21st International Symposium INFOTEH-JAHORINA (INFOTEH)}, 
-  title={Performance comparison of Docker and Podman container-based virtualization}, 
-  year={2022},
-  volume={},
-  number={},
-  pages={1-6},
-  keywords={Containers;Benchmark testing;Time measurement;Virtual machining;Hardware;Software;Servers;Virtualization;Docker;Podman;Virtual Machine;Containers;Filebench},
-  doi={10.1109/INFOTEH53737.2022.9751277}
-}
-```
-9. d
-```bibtex
 @Article{computers13040094,
 AUTHOR = {Silva, Daniel and Rafael, João and Fonte, Alexandre},
 TITLE = {Toward Optimal Virtualization: An Updated Comparative Analysis of Docker and LXD Container Technologies},
@@ -154,7 +140,7 @@ ABSTRACT = {Traditional hypervisor-assisted virtualization is a leading virtuali
 DOI = {10.3390/computers13040094}
 }
 ```
-10. d
+9. d
 ```bibtex
 @misc{Kjellstedt1475598,
    author = {Kjellstedt, Mattias},
@@ -168,7 +154,7 @@ DOI = {10.3390/computers13040094}
    year = {2020}
 }
 ```
-11. d
+10. 
 ```bibtex
 @article{article,
 author = {H. Husain, K. Marzuki, C. M. Lauw, and L. Z. A. Mardedi},
@@ -181,7 +167,7 @@ journal = {Int. J. Electron. Commun. Syst.},
 doi = {10.24042/ijecs.v3i2.19860}
 }
 ```
-12. wq
+11. wq
 
 
 # Introduction
